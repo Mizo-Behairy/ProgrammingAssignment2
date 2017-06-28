@@ -16,21 +16,21 @@ makeCacheMatrix <- function(x = matrix()) {
     
     if(is.matrix(x) && nrow(x) == ncol(x)){
         
-        m <- NULL
+        inv <- NULL
         
         set <- function(y) {
             
             x <<- y
             
-            m <<- NULL
+            inv  <<- NULL
             
         }
         
         get <- function() x
         
-        setmean <- function(mean) m <<- mean
+        setmean <- function(inverse) inv  <<- inverse
         
-        getmean <- function() m
+        getmean <- function() inv 
         
         list(set = set, 
              get = get,
@@ -55,7 +55,7 @@ makeCacheMatrix <- function(x = matrix()) {
 cacheSolve <- function(x, ...) {
     ## Return a matrix that is the inverse of 'x'
     
-    m <- x$getmean()
+    inv <- x$getmean()
     
     ## Double check the following :
     ## 1. the mean is already set or is null
@@ -64,27 +64,27 @@ cacheSolve <- function(x, ...) {
     ## if the mean is set and the Matrix doesn't changed, so return the mean from
     ## the cache, and if not, calculate the mean for the provided New Matrix
     
-    if(!is.null(m) && identical(x$get(), gblMatrix)) {
+    if(!is.null(inv) && identical(x$get(), gblMatrix)) {
         
     ## Return a message for indicating that the returned mean was from `cached data`
         
         message("getting cached data")
         
-        return(m)
+        return(inv)
         
     }
     
-    data <- ginv(x$get())
+    data <- x$get()
     
-    m <- mean(data, ...)
+    inv <- ginv(data, ...)
     
-    x$setmean(m)
+    x$setmean(inv)
     
     ## Return a message for indicating that the returned mean was from `New Calculation`
     
     message("calculating data")
     
-    m
+    inv
 }
 
 ## Running the functions as follow
@@ -101,4 +101,3 @@ rtnMatrix <- makeCacheMatrix(gblMatrix)
 ##    the `cacheSolve` function for inversing then calculating mean
 
 cacheSolve(rtnMatrix)
-
