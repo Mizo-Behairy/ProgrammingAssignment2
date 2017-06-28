@@ -28,14 +28,14 @@ makeCacheMatrix <- function(x = matrix()) {
         
         get <- function() x
         
-        setmean <- function(inverse) inv  <<- inverse
+        setInverse <- function(inverse) inv  <<- inverse
         
-        getmean <- function() inv 
+        getInverse <- function() inv 
         
         list(set = set, 
              get = get,
-             setmean = setmean,
-             getmean = getmean)
+             setInverse = setInverse,
+             getInverse = getInverse)
 
      ## if the user not passing a valid Square Matrix retun the following
      ## error message
@@ -55,18 +55,18 @@ makeCacheMatrix <- function(x = matrix()) {
 cacheSolve <- function(x, ...) {
     ## Return a matrix that is the inverse of 'x'
     
-    inv <- x$getmean()
+    inv <- x$getInverse()
     
     ## Double check the following :
-    ## 1. the mean is already set or is null
+    ## 1. the inversed matrix is already set or is null
     ## 2. the passed or Global Matrix (gblMatrix) is the same as the Stored Matrix 
     ##    or not (x$get())
-    ## if the mean is set and the Matrix doesn't changed, so return the mean from
-    ## the cache, and if not, calculate the mean for the provided New Matrix
+    ## if the inversed matrix is set and the Matrix doesn't changed, so return the inversed matrix from
+    ## the cache, and if not, calculate the inverse for the provided New Matrix
     
     if(!is.null(inv) && identical(x$get(), gblMatrix)) {
         
-    ## Return a message for indicating that the returned mean was from `cached data`
+    ## Return a message for indicating that the returned inversed matrix was from `cached data`
         
         message("getting cached data")
         
@@ -78,9 +78,9 @@ cacheSolve <- function(x, ...) {
     
     inv <- ginv(data, ...)
     
-    x$setmean(inv)
+    x$setInverse(inv)
     
-    ## Return a message for indicating that the returned mean was from `New Calculation`
+    ## Return a message for indicating that the returned inversed matrix was from `New Calculation`
     
     message("calculating data")
     
@@ -98,6 +98,6 @@ gblMatrix <- matrix(1:16, 4,4)
 rtnMatrix <- makeCacheMatrix(gblMatrix)
 
 ## 3. Passing the returned matrix from `makeCacheMatrix` function to
-##    the `cacheSolve` function for inversing then calculating mean
+##    the `cacheSolve` function for inversing
 
 cacheSolve(rtnMatrix)
