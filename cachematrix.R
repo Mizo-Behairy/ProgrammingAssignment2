@@ -62,7 +62,7 @@ cacheSolve <- function(x, ...) {
     ## 2. the passed or Global Matrix (gblMatrix) is the same as the Stored Matrix 
     ##    or not (x$get())
     ## if the inversed matrix is set and the Matrix doesn't changed, so return the inversed matrix from
-    ## the cache, and if not, calculate the inverse for the provided New Matrix
+    ## the cache, and if not, make the inverse for the provided New Matrix
     
     if(!is.null(inv) && identical(x$get(), gblMatrix)) {
         
